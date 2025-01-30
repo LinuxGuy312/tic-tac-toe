@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Tic Tac Toe</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/LinuxGuy312/cdn/main/ttt-favicon.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="preferences">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="preferences-menu" id="preferences-menu">
+            <div class="toggle-container">
+                <span>Light Mode</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="ai-difficulty">
+                <span>AI Difficulty:</span>
+                <select id="ai-difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div class="status" id="status">Player X's turn</div>
+        <div class="game-board" id="board">
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+        </div>
+        <button id="reset">Reset Game</button>
+        <button id="ai-toggle-button">Play with AI</button>
+    </div>
+
+    <!-- Popup for Win/Draw -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span id="popup-message"></span>
+            <button id="popup-close">Close</button>
+        </div>
+    </div>
+
+    <svg class="symbols">
+        <symbol id="x-icon" viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+        </symbol>
+        <symbol id="o-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8" fill="none"/>
+        </symbol>
+    </svg>
+    <script src="script.js"></script>
+</body>
+</html>
