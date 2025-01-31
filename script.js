@@ -22,6 +22,7 @@ const popupClose = document.getElementById('popup-close');
 let isGameActive = true;
 let currentPlayer = X_CLASS;
 let isAIEnabled = false;
+let isAIMakingMove = false;
 let aiMode = 'easy'; // Default AI difficulty
 
 // Load preferences from localStorage
@@ -62,6 +63,7 @@ popupClose.addEventListener('click', () => {
 
 function startGame() {
     isGameActive = true;
+    isAIMakingMove = false;
     currentPlayer = X_CLASS;
     cellElements.forEach(cell => {
         cell.innerHTML = '';
@@ -81,7 +83,7 @@ function toggleAI() {
 
 function handleClick(e) {
     const cell = e.target;
-    if (!isGameActive || cell.children.length > 0) return;
+    if (!isGameActive || cell.children.length > 0  || isAIMakingMove) return;
 
     placeMark(cell, currentPlayer);
 
@@ -94,6 +96,7 @@ function handleClick(e) {
         statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
 
         if (isAIEnabled && currentPlayer === O_CLASS) {
+            isAIMakingMove = true;
             setTimeout(makeAIMove, 500); // AI moves after a short delay
         }
     }
@@ -157,14 +160,7 @@ function isDraw() {
 function makeAIMove() {
     const availableCells = [...cellElements].filter(cell => cell.children.length === 0);
     if (availableCells.length > 0) {
-        let randomCell;
-        if (aiMode === 'easy') {
-            randomCell = getEasyAIMove(availableCells);
-        } else if (aiMode === 'medium') {
-            randomCell = getMediumAIMove(availableCells);
-        } else if (aiMode === 'hard') {
-            randomCell = getHardAIMove(availableCells);
-        }
+        let randomCell = getAIMove(availableCells, aiMode);
         placeMark(randomCell, O_CLASS);
 
         if (checkWin(O_CLASS)) {
@@ -176,16 +172,11 @@ function makeAIMove() {
             statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
         }
     }
+    isAIMakingMove = false;
 }
 
-function getEasyAIMove(availableCells) {
-    // Completely random move (easiest mode)
-    return availableCells[Math.floor(Math.random() * availableCells.length)];
-}
-
-function getMediumAIMove(availableCells) {
-    // 50% chance to make a smart move, 50% chance to make a random move
-    const shouldMakeSmartMove = Math.random() < 0.5;
+function getAIMove(availableCells, aiMode) {
+    const shouldMakeSmartMove = Math.random() < (aiMode === 'easy' ? 0.3 : aiMode === 'medium' ? 0.7 : 1);
 
     if (shouldMakeSmartMove) {
         // Try to win if possible
@@ -209,44 +200,19 @@ function getMediumAIMove(availableCells) {
         }
     }
 
+    if (aiMode === 'hard') {
+        const centerCell = cellElements[4];
+        if (availableCells.includes(centerCell)) {
+            return centerCell;
+        }
+
+        const corners = [0, 2, 6, 8];
+        const availableCorners = corners.filter(index => availableCells.includes(cellElements[index]));
+        if (availableCorners.length > 0) {
+            return cellElements[availableCorners[Math.floor(Math.random() * availableCorners.length)]];
+        }
+    }
+
     // Otherwise, random move
-    return availableCells[Math.floor(Math.random() * availableCells.length)];
-}
-
-function getHardAIMove(availableCells) {
-    // Try to win if possible
-    for (let cell of availableCells) {
-        cell.classList.add(O_CLASS);
-        if (checkWin(O_CLASS)) {
-            cell.classList.remove(O_CLASS);
-            return cell;
-        }
-        cell.classList.remove(O_CLASS);
-    }
-
-    // Block player from winning
-    for (let cell of availableCells) {
-        cell.classList.add(X_CLASS);
-        if (checkWin(X_CLASS)) {
-            cell.classList.remove(X_CLASS);
-            return cell;
-        }
-        cell.classList.remove(X_CLASS);
-    }
-
-    // Try to take the center
-    const centerCell = cellElements[4];
-    if (availableCells.includes(centerCell)) {
-        return centerCell;
-    }
-
-    // Try to take a corner
-    const corners = [0, 2, 6, 8];
-    const availableCorners = corners.filter(index => availableCells.includes(cellElements[index]));
-    if (availableCorners.length > 0) {
-        return cellElements[availableCorners[Math.floor(Math.random() * availableCorners.length)]];
-    }
-
-    // Otherwise, take any available cell
     return availableCells[Math.floor(Math.random() * availableCells.length)];
 }

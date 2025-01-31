@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 body {
@@ -91,8 +91,9 @@ body.light-mode .cell:hover {
     padding: 10px 20px;
     background: #2d2d2d;
     border-radius: 5px;
-    color: #888;
+    color: #999;
     font-weight: 300;
+    transition: background 0.3s ease;
 }
 
 body.light-mode .status {
@@ -145,18 +146,19 @@ body.light-mode .winning-cell {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    gap: 5px;
+    gap: 4px;
 }
 
 .hamburger span {
-    width: 30px;
+    width: 25px;
     height: 3px;
-    background: #fff;
+    background: #ccc;
     transition: all 0.3s ease;
+    border-radius: 3px;
 }
 
 body.light-mode .hamburger span {
-    background: #333;
+    background: #666;
 }
 
 .hamburger.active span:nth-child(1) {
@@ -200,8 +202,8 @@ body.light-mode .preferences-menu {
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 50px;
+    height: 24px;
 }
 
 .switch input {
@@ -225,8 +227,8 @@ body.light-mode .preferences-menu {
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 16px;
+    width: 16px;
     left: 4px;
     bottom: 4px;
     background-color: white;
